@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "75e776e9-32ce-49da-aaad-da23bafb5cc4",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\candidate.json",
+  "output": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.html",
+  "specification": {
+    "sha256": "256a7af2b2d0e73b640336a186a92c48d6aac2b5b901f666514cfc4b5a1df4a3",
+    "bytes": 9803
+  },
+  "artifact": {
+    "sha256": "fb12b5c9ca558598feb1b10fe8227331e078556b69d8652ee2ddfee734a10430",
+    "bytes": 766492
+  }
+}

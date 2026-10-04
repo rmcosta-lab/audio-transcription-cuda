@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Audio & Video Runtime Architecture",
+    "output": ".archify/architecture-runtime-20261004-165140/runtime.html",
+    "quality_profile": "showcase",
+    "locale": "en",
+    "repository": {
+      "url": "https://github.com/rmcosta-lab/audio-transcription-cuda.git",
+      "revision": "bf73dce075bf970397f420cbc878d27dd6b1062d",
+      "link_mode": "local-only"
+    }
+  },
+  "components": [
+    {
+      "id": "inputs",
+      "type": "external",
+      "label": "Input videos",
+      "sublabel": "Operator-selected files",
+      "pos": [
+        60,
+        130
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "pipeline.py",
+          "line": 39,
+          "end_line": 55
+        }
+      ]
+    },
+    {
+      "id": "batch",
+      "type": "backend",
+      "label": "Batch controller",
+      "sublabel": "pipeline.py",
+      "pos": [
+        340,
+        130
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "pipeline.py",
+          "line": 97,
+          "end_line": 147
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "type": "backend",
+      "label": "Media stages",
+      "sublabel": "Edit, then extract audio",
+      "pos": [
+        630,
+        130
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "pipeline.py",
+          "line": 110,
+          "end_line": 135
+        },
+        {
+          "path": "edicao_video/cortar_trechos_fala.py",
+          "line": 308,
+          "end_line": 358
+        },
+        {
+          "path": "extracao_audio/extrair_audio.py",
+          "line": 68,
+          "end_line": 100
+        }
+      ]
+    },
+    {
+      "id": "native",
+      "type": "external",
+      "label": "FFmpeg / ffprobe",
+      "sublabel": "External executables",
+      "pos": [
+        630,
+        350
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "edicao_video/cortar_trechos_fala.py",
+          "line": 52,
+          "end_line": 84
+        },
+        {
+          "path": "edicao_video/cortar_trechos_fala.py",
+          "line": 193,
+          "end_line": 260
+        },
+        {
+          "path": "extracao_audio/extrair_audio.py",
+          "line": 68,
+          "end_line": 100
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "type": "database",
+      "label": "Media outputs",
+      "sublabel": "MP4 clips + M4A audio",
+      "pos": [
+        340,
+        350
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "edicao_video/cortar_trechos_fala.py",
+          "line": 239,
+          "end_line": 260
+        },
+        {
+          "path": "extracao_audio/extrair_audio.py",
+          "line": 84,
+          "end_line": 100
+        },
+        {
+          "path": "pipeline.py",
+          "line": 120,
+          "end_line": 135
+        }
+      ]
+    },
+    {
+      "id": "transcribe",
+      "type": "backend",
+      "label": "Transcription CLI",
+      "sublabel": "Separate invocation",
+      "pos": [
+        340,
+        580
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "transcrever_audio/transcrever_audio.py",
+          "line": 190,
+          "end_line": 222
+        }
+      ]
+    },
+    {
+      "id": "inference",
+      "type": "backend",
+      "label": "faster-whisper",
+      "sublabel": "CPU or optional CUDA",
+      "pos": [
+        630,
+        580
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "transcrever_audio/transcrever_audio.py",
+          "line": 115,
+          "end_line": 150
+        },
+        {
+          "path": "pyproject.toml",
+          "line": 9,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "models",
+      "type": "cloud",
+      "label": "Hugging Face",
+      "sublabel": "Model download + cache",
+      "pos": [
+        920,
+        580
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "transcrever_audio/README.md",
+          "line": 20,
+          "end_line": 22
+        },
+        {
+          "path": "transcrever_audio/transcrever_audio.py",
+          "line": 115,
+          "end_line": 132
+        }
+      ]
+    },
+    {
+      "id": "markdown",
+      "type": "database",
+      "label": "Transcripts",
+      "sublabel": "Timestamped Markdown",
+      "pos": [
+        60,
+        580
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "transcrever_audio/transcrever_audio.py",
+          "line": 86,
+          "end_line": 112
+        },
+        {
+          "path": "transcrever_audio/transcrever_audio.py",
+          "line": 152,
+          "end_line": 154
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "discover",
+      "to": "batch",
+      "label": "discover",
+      "variant": "emphasis",
+      "from": "inputs"
+    },
+    {
+      "id": "execute",
+      "to": "stages",
+      "label": "run in order",
+      "variant": "emphasis",
+      "from": "batch"
+    },
+    {
+      "id": "subprocess",
+      "to": "native",
+      "label": "subprocess",
+      "variant": "emphasis",
+      "from": "stages"
+    },
+    {
+      "id": "write-media",
+      "to": "media",
+      "label": "write files",
+      "variant": "emphasis",
+      "from": "native"
+    },
+    {
+      "id": "manual-handoff",
+      "to": "transcribe",
+      "label": "manual CLI step",
+      "variant": "dashed",
+      "from": "media"
+    },
+    {
+      "id": "infer",
+      "to": "inference",
+      "label": "load / transcribe",
+      "variant": "default",
+      "from": "transcribe"
+    },
+    {
+      "id": "fetch",
+      "to": "models",
+      "label": "if uncached",
+      "variant": "dashed",
+      "from": "inference"
+    },
+    {
+      "id": "write-text",
+      "to": "markdown",
+      "label": "write",
+      "variant": "default",
+      "from": "transcribe"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Python batch process",
+      "wraps": [
+        "batch",
+        "stages"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "Native subprocess boundary",
+      "wraps": [
+        "native"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "Separate Python transcription process",
+      "wraps": [
+        "transcribe",
+        "inference"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "External model service",
+      "wraps": [
+        "models"
+      ],
+      "pad": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Primary runtime path",
+      "items": [
+        "Input videos ? batch controller ? media stages ? FFmpeg ? MP4/M4A files.",
+        "The controller calls analysis and cut generation before audio extraction; modules share its Python process.",
+        "FFprobe checks for audio and duration. FFmpeg detects silence, encodes cuts, and copies AAC into M4A."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust crossings",
+      "items": [
+        "Input media and output folders are operator-selected filesystem paths. Native executables are resolved through PATH.",
+        "Boxes mark process and external-service boundaries, not enforced security groups. No sandbox or privilege isolation is configured in the inspected entry points.",
+        "Transcription delegates model retrieval to faster-whisper; truststore enables OS certificate trust. Model service/cache behavior is documented in transcrever_audio/README.md:22."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Optional transcription",
+      "items": [
+        "The root pipeline stops after extraction. The dashed handoff requires a separate transcrever_audio command.",
+        "One model is reused per batch; CPU/int8 is the default, CUDA is optional. VAD is enabled unless --no-vad is set.",
+        "The transcription CLI writes Markdown; faster-whisper returns segments. Local model-cache details are delegated to the dependency."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Outputs and failure handling",
+      "items": [
+        "The editor also writes timing TXT files. The controller writes relatorio_pipeline.json after each video, including errors and skips.",
+        "Existing media files are protected unless --overwrite is supplied; only cuts from the current run enter extraction.",
+        "Video failures allow the batch to continue. No automatic resume; interrupted work can leave partial files. Optional NVENC affects video encoding."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Evidence scope",
+      "items": [
+        "Analyzed the current working tree, including uncommitted runtime modules; upstream HEAD is ce27b9ce8d469118059bbc616234ea74893148fd.",
+        "Citations resolve against an isolated local source snapshot bf73dce075bf970397f420cbc878d27dd6b1062d, not an upstream commit.",
+        "Changed paths: README.md; deleted root transcrever_audio.py. Untracked runtime paths: pipeline.py, pyproject.toml, edicao_video/, extracao_audio/, transcrever_audio/. Other untracked paths: tests/, .gitignore, .python-version, uv.lock."
+      ]
+    }
+  ]
+}

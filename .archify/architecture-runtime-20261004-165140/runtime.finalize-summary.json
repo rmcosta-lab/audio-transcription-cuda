@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\candidate.json",
+    "sha256": "256a7af2b2d0e73b640336a186a92c48d6aac2b5b901f666514cfc4b5a1df4a3",
+    "bytes": 9803
+  },
+  "artifact": {
+    "path": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.html",
+    "sha256": "fb12b5c9ca558598feb1b10fe8227331e078556b69d8652ee2ddfee734a10430",
+    "bytes": 766492
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.finalize.json",
+    "summaryReceipt": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.finalize-summary.json",
+    "browserCheckReceipt": "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4818
+}

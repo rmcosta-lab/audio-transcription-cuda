@@ -1,0 +1,9 @@
+﻿{
+    "artifact":  "D:\\LabIA\\audio-transcription-cuda\\.archify\\architecture-runtime-20261004-165140\\runtime.html",
+    "artifact_sha256":  "1313500b1db0e94ecb684e134c4ffb8b444527925dfeef027b5c9b626cf87ee7",
+    "change":  "Direct CSS fix: min-width:0 and overflow-wrap:anywhere on cards; min-width:0 on headings",
+    "validation":  "Playwright: no document or card horizontal overflow at widths 375,768,1440,2048",
+    "visual_review":  "Passed: inspected cards screenshot at 1440x900",
+    "screenshot":  "output/playwright/runtime-layout-fixed.png",
+    "provenance_note":  "Original Archify finalize receipts describe the pre-CSS artifact. This layout receipt describes the updated HTML."
+}
