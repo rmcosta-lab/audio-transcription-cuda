@@ -9,6 +9,8 @@ dependencies = []
 [project.optional-dependencies]
 transcricao = [
     "faster-whisper>=1.2.1,<2",
+    # faster-whisper 1.2.1 passes metadata_errors, removed in PyAV 19.
+    "av>=11,<19",
     "truststore>=0.10,<1",
 ]
 
