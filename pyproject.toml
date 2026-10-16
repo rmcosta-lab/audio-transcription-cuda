@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Pipeline em lote para cortar videos, extrair audio e transcrever com Whisper."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["PyYAML>=6.0.2,<7"]
 
 [project.optional-dependencies]
 transcricao = [

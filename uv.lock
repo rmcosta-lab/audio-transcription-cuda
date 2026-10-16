@@ -25,6 +25,9 @@ wheels = [
 name = "audio-transcription-cuda"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "pyyaml" },
+]
 
 [package.optional-dependencies]
 transcricao = [
@@ -44,6 +47,7 @@ dev = [
 requires-dist = [
     { name = "av", marker = "extra == 'transcricao'", specifier = ">=11,<19" },
     { name = "faster-whisper", marker = "extra == 'transcricao'", specifier = ">=1.2.1,<2" },
+    { name = "pyyaml", specifier = ">=6.0.2,<7" },
     { name = "truststore", marker = "extra == 'transcricao'", specifier = ">=0.10,<1" },
 ]
 provides-extras = ["transcricao"]

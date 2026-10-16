@@ -101,6 +101,57 @@ Consulte todas as opções:
 uv run pipeline.py --help
 ```
 
+## Organizar e renomear os cortes
+
+Para reunir vídeos de uma pasta e suas subpastas em um único destino, use dois
+comandos. Primeiro gere o YAML editável:
+
+```powershell
+uv run --locked -m organizar_videos listar "D:\Camtasia\FDC_OBS\visaoestrategica\cortes" --yaml "organizacao.yaml" --destino "D:\Camtasia\FDC_OBS\visaoestrategica\organizados"
+```
+
+O YAML é criado dentro da pasta informada ao `listar` quando `--yaml` é relativo.
+Preencha `ordem` e `novo_nome` em cada item. Depois valide e aplique informando o
+caminho completo do YAML:
+
+```powershell
+# Opcional: conferir nomes e caminhos sem mover.
+uv run --locked -m organizar_videos aplicar --yaml "D:\Camtasia\FDC_OBS\visaoestrategica\cortes\organizacao.yaml" --simular
+
+uv run --locked -m organizar_videos aplicar --yaml "D:\Camtasia\FDC_OBS\visaoestrategica\cortes\organizacao.yaml"
+```
+
+Os nomes finais seguem `01.Novo nome.mp4`, com no mínimo dois dígitos e a extensão
+original. Todos os vídeos ficam diretamente na pasta de destino. O módulo valida
+o YAML inteiro antes de mover e não sobrescreve arquivos existentes. Os vídeos
+são movidos, sem recodificação; relatórios e áudios permanecem onde estão.
+Consulte o [formato do YAML, exemplos e tratamento de falhas](organizar_videos/README.md).
+
+## Juntar vídeos sem recodificar
+
+O módulo `juntar_videos` gera um único vídeo na ordem de uma lista YAML,
+preservando os arquivos originais. Exemplo de `juncao.yaml`:
+
+```yaml
+origem: 'D:\videos\organizados'
+saida: 'D:\videos\aula_completa.mp4'
+arquivos:
+  - '01.Introdução.mp4'
+  - '03.Análise do ambiente.mp4'
+  - '02.Conceitos de estratégia.mp4'
+```
+
+```powershell
+uv run --locked -m juntar_videos --yaml "juncao.yaml" --simular
+uv run --locked -m juntar_videos --yaml "juncao.yaml"
+```
+
+A ordem é a posição no YAML, não o número do nome. O FFmpeg copia todos os
+streams com `-c copy`, sem recodificar. Os arquivos precisam ter streams
+compatíveis; o módulo verifica codecs e configuração de vídeo/áudio antes de
+juntar. A saída final só é publicada após sucesso e nunca substitui arquivos
+existentes. Consulte [YAML, compatibilidade e falhas](juntar_videos/README.md).
+
 ## Executar cada etapa separadamente
 
 ```powershell
@@ -128,11 +179,20 @@ Documentação de cada etapa:
 - [Extração de áudio](extracao_audio/README.md): cópia do áudio e recodificação.
 - [Transcrição](transcrever_audio/README.md): Whisper, CPU, CUDA e certificados.
 
+- [Organização de vídeos](organizar_videos/README.md): catálogo YAML, nomes, ordem e movimentação.
+- [Junção de vídeos](juntar_videos/README.md): sequência em YAML e cópia de streams sem encode.
+
 ## Estrutura do repositório
 
 ```text
 .
 +-- pipeline.py
++-- organizar_videos/
+|   +-- organizar.py
+|   +-- README.md
++-- juntar_videos/
+|   +-- juntar.py
+|   +-- README.md
 +-- pyproject.toml
 +-- uv.lock
 +-- .python-version
@@ -150,6 +210,8 @@ Documentação de cada etapa:
 |   +-- extracao_audio/
 |   +-- transcrever_audio/
 |   +-- test_pipeline.py
+|   +-- organizar_videos/
+|   +-- juntar_videos/
 +-- cola.py                   # Preservado
 ```
 
@@ -164,4 +226,4 @@ uv run --locked ruff check .
 uv run --locked ruff format --check .
 ```
 
-Os testes estão agrupados por etapa. Validam a orquestração do lote, preservação de caminhos, conflitos de saída, tratamento de erros, detecção de intervalos e transcrição individual e em lote. Usam substitutos das chamadas de mídia e do modelo: não geram vídeos sintéticos, não executam processamento de mídia e não baixam modelos Whisper.
+Os testes estão agrupados por etapa. Validam a orquestração do lote, preservação de caminhos, conflitos de saída, tratamento de erros, detecção de intervalos, organização, junção e transcrição individual e em lote. A maioria usa substitutos das chamadas de mídia e do modelo, sem baixar modelos Whisper. O teste de integração de `juntar_videos` usa FFmpeg para criar e unir vídeos sintéticos curtos em pasta temporária, verificando codecs, duração e ordem; ele é ignorado quando FFmpeg ou ffprobe não está no `PATH`.
